@@ -1,0 +1,35 @@
+{
+  "name": "tut-cli",
+  "version": "1.0.0",
+  "description": "a cli tool for daily projects",
+  "main": "index.js",
+  "bin": "./bin/cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/774848686/tut-cli.git"
+  },
+  "keywords": [
+    "cli",
+    "js"
+  ],
+  "author": "tut",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/774848686/tut-cli/issues"
+  },
+  "homepage": "https://github.com/774848686/tut-cli#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "chalk": "^4.1.1",
+    "commander": "^8.0.0",
+    "download-git-repo": "^3.0.2",
+    "ejs": "^3.1.6",
+    "figlet": "^1.5.0",
+    "fs-extra": "^10.0.0",
+    "inquirer": "^8.1.1",
+    "ora": "^5.4.1"
+  }
+}
