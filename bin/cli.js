@@ -2,6 +2,7 @@
 
 const program = require('commander');
 const createCommond = require('../commond/create');
+const releaseCode = require('../commond/release');
 // 定义命令和参数
 program.command('create <app-name>')
     .description('create a new project')
@@ -11,5 +12,11 @@ program.command('create <app-name>')
         // 打印执行结果
         createCommond(name, options)
     })
+program
+    .command('releaseCo <commit-text>')
+    .description('发布代码')
+    .action(function (text,options) {
+        releaseCode(text);
+    });
 // 解析用户执行命令传入参数
 program.parse(process.argv);

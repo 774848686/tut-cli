@@ -4,7 +4,6 @@ const inquirer = require('inquirer');
 const utils = require('../utils');
 module.exports = async function (name, options) {
     let targetDir = utils.getDir(name);
-    console.log(targetDir)
     if (fs.existsSync(targetDir)) {
         if (options.force) {
             await fs.remove(targetDir)
@@ -35,4 +34,5 @@ module.exports = async function (name, options) {
         }
     }
     // 创建一个文件夹
+
 }
