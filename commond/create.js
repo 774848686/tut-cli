@@ -1,7 +1,8 @@
 const path = require('path');
 const fs = require('fs-extra');
 const inquirer = require('inquirer');
-const utils = require('../utils');
+const utils = require('../utils/index');
+const Generator = require('./Generator');
 module.exports = async function (name, options) {
     let targetDir = utils.getDir(name);
     if (fs.existsSync(targetDir)) {
@@ -34,5 +35,10 @@ module.exports = async function (name, options) {
         }
     }
     // 创建一个文件夹
+     // 创建项目
+     const generator = new Generator(name, targetDir);
+
+     // 开始创建项目
+     generator.create()
 
 }
