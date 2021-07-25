@@ -18,7 +18,7 @@ program
     .action(function (text,options) {
         releaseCode(text);
         console.log('\r\n' + figlet.textSync('NO BUG', {
-            font: 'eftiwall',
+            font: 'Bear',
             horizontalLayout: 'default',
             verticalLayout: 'default',
             width: 80,
