@@ -1,7 +1,7 @@
 const path = require('path');
 const ora = require('ora');
 const {
-    execSync
+    execSync,
 } = require('child_process');
 
 function getDir(name) {
@@ -10,10 +10,18 @@ function getDir(name) {
     // 需要创建的目录地址
     return path.join(cwd, name)
 }
-
+// 提交代码
 function pusBranch(text) {
     try {
         execSync(`git add . && git commit -m '${text}' && git push`);
+    } catch (e) {
+        console.log(e);
+    }
+}
+// 执行plop命令创建组件
+async function createComp(){
+    try {
+        execSync(`npx plop`);
     } catch (e) {
         console.log(e);
     }
@@ -39,5 +47,6 @@ async function wrapLoading(fn, message, ...args) {
 module.exports = {
     getDir,
     pusBranch,
+    createComp,
     wrapLoading
 }
