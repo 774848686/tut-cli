@@ -19,7 +19,7 @@ function pusBranch(text) {
     }
 }
 // 执行plop命令创建组件
-async function createComp(){
+async function createComp() {
     try {
         execSync(`npx plop`);
     } catch (e) {
@@ -50,3 +50,5 @@ module.exports = {
     createComp,
     wrapLoading
 }
+
+

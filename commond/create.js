@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
+//fs-extra 是对 fs 模块的扩展，支持 promise 
 const inquirer = require('inquirer');
 const utils = require('../utils/index');
 const Generator = require('./Generator');
@@ -30,15 +31,20 @@ module.exports = async function (name, options) {
             } else if (action === 'overwrite') {
                 // 移除已存在的目录
                 console.log(`\r\nRemoving...`)
-                await fs.remove(targetDir)
+                await fs.remove(targetDir);
+                // 创建一个文件夹
+                // 创建项目
+                const generator = new Generator(name, targetDir);
+                // 开始创建项目
+                generator.create()
             }
         }
     }
     // 创建一个文件夹
-     // 创建项目
-     const generator = new Generator(name, targetDir);
+    // 创建项目
+    const generator = new Generator(name, targetDir);
 
-     // 开始创建项目
-     generator.create()
+    // 开始创建项目
+    generator.create()
 
 }

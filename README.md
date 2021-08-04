@@ -39,11 +39,11 @@ console.log('start')
 可执行测试一下，输入命令`tut-cli`,如果能在终端输出`start`，我们便完成了脚手架的第一步骤。
 #### commander自定义命令
 - 我们在使用`vue-cli`创建项目的时候，会自动创建一个项目目录，然后拉取对应的模版代码；我们就按照这个思路去写一个自定义命令。
-1. 安装依赖
+一. 安装依赖
 ```
 npm install commander
 ``` 
-1. 自定义一个`tut-cli create app-name`命令：
+二. 自定义一个`tut-cli create app-name`命令：
 ```
 // /bin/cli.js
 const program = require('commander');
@@ -58,5 +58,101 @@ program.command(`create <app-name>`)
 program.parse(process.argv);
 ```
 在终端运行`tut-cli create my-app`,这时候终端就会输出`name,my-app`
+
+三. 使用`inquirer`与开发者进行交互.我们想要跟`vue-cli`那样，创建一个项目目录的时候，需要检查该项目是否已经存在；
+1. 首先我们是要进行检测项目是否存在，使用node中的fs模块如下代码：
+```
+const fs = require('fs-extra');
+const program = require('commander');
+const path = require('path');
+program.command(`create <app-name>`)
+    // -f or --force 为强制创建，如果创建的目录存在则直接覆盖
+       .option('-f, --force', 'overwrite target directory if it exist')
+       .action((name, options) => {
+        // 获取待创建的app名称
+        const targetDir = path.join(process.cwd(),name)
+        if(fs.existsSync(targetDir)){
+            // 这块就是询问开发者是否要进行覆盖或者不覆盖
+        }
+        // 不存在，则需要创建该目录
+        console.log('name',name)
+    })
+// 注意最后需要解析一下参数
+program.parse(process.argv);
+```
+2. 我们实现一下询问开发者是否要进行覆盖文件功能；
+这就用到我们的`inquirer`工具库，做一个选择列表，具体使用如下：
+```
+const inquirer = require('inquirer');
+// inquirer 返回的是一个promise，所以我们可以用await进行操作；
+let {action} = await inquirer.prompt([
+    {
+        name: 'action',
+        name: 'action',
+        type: 'list',
+        message: 'Target directory already exists Pick an action:',
+        choices: [{
+                    name: 'Overwrite',
+                    value: 'overwrite'
+                }, {
+                    name: 'Cancel',
+                    value: false
+                }]
+    }
+]);
+console.log('action',action)
+```
+这样我们就可以拿到这个开发者选择的结果了。如果是选择覆盖，那么我们使用`fs.remove('dirpath')`即可。完善的逻辑如下：
+```
+
+const fs = require('fs-extra');
+const program = require('commander');
+const path = require('path');
+const inquirer = require('inquirer');
+program.command(`create <app-name>`)
+    // -f or --force 为强制创建，如果创建的目录存在则直接覆盖
+    .option('-f, --force', 'overwrite target directory if it exist')
+    .action((name, options) => {
+        // 获取待创建的app名称
+        const targetDir = path.join(process.cwd(), name)
+        if (fs.existsSync(targetDir)) {
+            // 这块就是询问开发者是否要进行覆盖或者不覆盖
+            let {
+                action
+            } = await inquirer.prompt([{
+                name: 'action',
+                name: 'action',
+                type: 'list',
+                message: 'Target directory already exists Pick an action:',
+                choices: [{
+                    name: 'Overwrite',
+                    value: 'overwrite'
+                }, {
+                    name: 'Cancel',
+                    value: false
+                }]
+            }]);
+            if (!action) {
+                return;
+            } else if (action === 'overwrite') {
+                // 移除已存在的目录
+                console.log(`\r\nRemoving...`)
+                await fs.remove(targetDir);
+                // 创建一个文件夹
+                // 创建项目
+                // 开始创建项目
+            }
+
+        }
+        // 不存在，则需要创建该目录
+        console.log('name', name)
+    })
+// 注意最后需要解析一下参数
+program.parse(process.argv);
+```
+
+
+
+
 
 
